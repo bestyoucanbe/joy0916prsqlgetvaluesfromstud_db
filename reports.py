@@ -106,3 +106,46 @@ cohorts = StudentCohortReports()
 cohorts.all_cohorts()
 print("----------------------")
 # ------------------------
+# Instructions-->Display all exercises.
+print("----------------------")
+print("All Exercises:")
+
+
+class Exercise():
+
+    def __init__(self, exercise):
+        self.exercise = exercise
+
+    def __repr__(self):
+        return f'{self.exercise}'
+
+
+class StudentExerciseReports():
+
+    """Methods for reports on the Student Exercises database"""
+
+    def __init__(self):
+        self.db_path = "/Users/Owner/workspace/practices/joypr0912sqlcreatestudentdb/studentexercises.db"
+
+    def all_exercises(self):
+        """Retrieve all exercises"""
+
+        with sqlite3.connect(self.db_path) as conn:
+
+            conn.row_factory = lambda cursor, row: Exercise(row[0])
+
+            db_cursor = conn.cursor()
+
+            db_cursor.execute("""SELECT e.Name_of_Exercise
+            FROM Exercise e""")
+
+            all_exercises = db_cursor.fetchall()
+
+            for exercise in all_exercises:
+                print(exercise)
+
+
+exercises = StudentExerciseReports()
+exercises.all_exercises()
+print("----------------------")
+# ------------------------
