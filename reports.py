@@ -188,3 +188,66 @@ class StudentPythonExerciseReports:
 
 python_exercises = StudentPythonExerciseReports()
 python_exercises.all_python_exercises()
+
+# ------------------------
+# Instructions-->Output a report in your terminal that lists all students and the exerices each is assigned. Use a dictionary to track each exercise. Remember that the key should be the exercise id and the value should be the entire exercise object
+print("----------------------")
+print("Shows which students are working on each exercise:")
+
+
+class Python_Exercise():
+
+    def __init__(self, exercise):
+        self.exercise = exercise
+
+    def __repr__(self):
+        return f('{self.exercise}')
+
+
+class StudentPythonExerciseReports:
+
+    def __init__(self):
+        self.db_path = "/Users/Owner/workspace/practices/joypr0912sqlcreatestudentdb/studentexercises.db"
+
+    def all_python_exercises(self):
+        """Retrieve only python exercises"""
+
+        exercises = dict()
+
+        with sqlite3.connect(self.db_path) as conn:
+
+            # conn.row_factory = lambda cursor, row:  Exercise(row[0])
+
+            db_cursor = conn.cursor()
+
+            db_cursor.execute("""SELECT e.id,
+            e.Name_of_Exercise,
+            s.Id AS StudentId,
+            s.First_Name,
+            s.Last_Name
+            from Exercise e
+            join Student_Exercise se on se.Exercise_Id = e.Id
+            join Student s on s.Id = se.Student_Id
+            """)
+
+            dataset = db_cursor.fetchall()
+
+            for row in dataset:
+                exercise_id = row[0]
+                exercise_name = row[1]
+                student_id = row[2]
+                student_name = f'{row[3]} {row[4]}'
+
+                if exercise_name not in exercises:
+                    exercises[exercise_name] = [student_name]
+                else:
+                    exercises[exercise_name].append(student_name)
+
+            for exercise_name, students in exercises.items():
+                print(exercise_name)
+
+                for student in students:
+                    print(f'\t* {student}')
+
+python_exercises = StudentPythonExerciseReports()
+python_exercises.all_python_exercises()
