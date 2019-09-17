@@ -107,7 +107,6 @@ cohorts.all_cohorts()
 print("----------------------")
 # ------------------------
 # Instructions-->Display all exercises.
-print("----------------------")
 print("All Exercises:")
 
 
@@ -147,5 +146,45 @@ class StudentExerciseReports():
 
 exercises = StudentExerciseReports()
 exercises.all_exercises()
-print("----------------------")
 # ------------------------
+# Instructions-->Display only exercises in Python
+print("----------------------")
+print("Only Python Exercises:")
+
+
+class Python_Exercise():
+
+    def __init__(self, exercise):
+        self.exercise = exercise
+
+    def __repr__(self):
+        return f('{self.exercise}')
+
+
+class StudentPythonExerciseReports:
+
+    def __init__(self):
+        self.db_path = "/Users/Owner/workspace/practices/joypr0912sqlcreatestudentdb/studentexercises.db"
+
+    def all_python_exercises(self):
+        """Retrieve only python exercises"""
+
+        with sqlite3.connect(self.db_path) as conn:
+
+            conn.row_factory = lambda cursor, row:  Exercise(row[0])
+
+            db_cursor = conn.cursor()
+
+            db_cursor.execute("""SELECT e.Name_of_Exercise
+            FROM Exercise e
+            WHERE Coding_Language = "Python"
+            """)
+
+            all_python_exercises = db_cursor.fetchall()
+
+            for each_exercise in all_python_exercises:
+                print(each_exercise)
+
+
+python_exercises = StudentPythonExerciseReports()
+python_exercises.all_python_exercises()
